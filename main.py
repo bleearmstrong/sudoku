@@ -4,10 +4,13 @@ import math
 
 class Grid:
 
+
     def __init__(self):
         self.y = self.new_grid()
         while not self.validate():
             self.y = self.new_grid()
+
+        self.counter = 0
 
 
     def new_grid(self):
@@ -34,9 +37,28 @@ class Grid:
             z = [w for w in x if not math.isnan(w)]
             if len(z) != len(set(z)):
                 return False
+        for i in range(3):
+            for j in range(3):
+                t = self.y[(3 * i):(3 * (i + 1)), (3 * j):(3 * (j + 1))].flatten()
+                if len(t) != len(set(t)):
+                    return False
         return True
 
 
+    def solve(self):
+
+        if np.count_nonzero(~np.isnan(self.y)) == 81 and self.validate():
+            return True
+        min_nan = np.argwhere(np.isnan(self.y))[0]
+        for i in range(1, 10):
+            self.y[min_nan[0], min_nan[1]] = i
+            if self.validate() and self.solve():
+                return True
+            self.y[min_nan[0], min_nan[1]] = np.nan
+        return False
+
 x = Grid()
 
+x.y
+x.solve()
 x.y
