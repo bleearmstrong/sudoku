@@ -44,7 +44,6 @@ class Grid:
                     return False
         return True
 
-
     def solve(self):
 
         if np.count_nonzero(~np.isnan(self.y)) == 81 and self.validate():
@@ -57,8 +56,25 @@ class Grid:
             self.y[min_nan[0], min_nan[1]] = np.nan
         return False
 
+    def display(self):
+        print('--------------------------------')
+        for j, row in enumerate(self.y):
+            line = '|'
+            for i, item in enumerate(row):
+                line += ' {} '.format(int(item))
+                if i !=0 and (i + 1) % 3 == 0:
+                    line += '|'
+            print(line)
+            if j != 0 and (j + 1) % 3 == 0:
+                print('--------------------------------')
+
+
+
+
+
 x = Grid()
 
 x.y
 x.solve()
 x.y
+x.display()
